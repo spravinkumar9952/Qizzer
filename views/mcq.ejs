@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <style>
+        .container {
+            font-size: 1.5rem;
+        }
+
+        .form-check-input {
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+
+        .form-check-label {
+            margin-left: 1rem;
+        }
+    </style>
+
+    <title>MCQ</title>
+</head>
+
+<body>
+    <h1 class="text-center">Qizzer</h1>
+    <h2 id="timer" class="text-center"></h2>
+    <h2 class="text-center text-success">Score: <%= score%></h2>
+    <div class="container mt-4">
+        <form method="post" action="mcq">
+            <div class="form-group">
+                <label for="question">
+                    <%= Questions.description %>
+                </label>
+
+                <div class="form-group">
+                    <% for(let i = 0; i < Questions.options.length; i++) { %>
+                        <div class="form-check mt-4">
+                            <input class="form-check-input" type="radio" name="option" id="option"
+                                value="<%= Questions.options[i]%>">
+                            <label class="form-check-label" for="option">
+                                <%=Questions.options[i]%>
+                            </label>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="d-flex justify-content-between my-5">
+                    <button class="btn btn-primary" >Previous</button>
+                    <button class="btn btn-success" id="verify">Check</button>
+                    <button class="btn btn-primary" id="next">Next</button>
+                </div>
+        </form>
+    </div>
+</body>
+<script>
+    // $(document).ready(function() {
+    //   $('#next').click(function() {
+    //     $.ajax({
+    //       url: '/mcq',
+    //       type: 'POST',
+    //       success: function(response) {
+    //         console.log(response);
+    //       }
+    //     });
+    //   });
+    // });
+
+    // Set the date we're counting down to
+    var countDownDate = "<%=endTime%>";
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+</script>
+</html>
